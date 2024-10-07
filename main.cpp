@@ -3,10 +3,12 @@
 #include <fstream>
 
 #include "singly linked list.hpp"
+#include "double linked list.hpp"
 
 using namespace std;
 
 singlyList sList; // создание односвзяного листа
+doubleList dList; // создание двусвязного листа
 
 void commands(const string& query) { // обработка входящих команд
     stringstream ss(query); // создаём объект и инициализиурем его строкой
@@ -59,6 +61,54 @@ void commands(const string& query) { // обработка входящих ко
     else if (command == "SLPRINT") { // вывод списка
         sList.loadFromFile("slist.txt");
         sList.printList();
+    }
+
+
+    // двусвязный список
+    else if (command == "DLPUSH_HEAD") { // добавление элемента в голову
+        dList.loadFromFile("dlist.txt");
+        string item; // добавляемый элемент
+        ss >> item; // считываем элемент
+        dList.addToHead(item);
+        dList.saveToFile("dlist.txt"); 
+    }
+    else if (command == "DLPUSH_TAIL") { // добавление в хвост
+        dList.loadFromFile("dlist.txt");
+        string item;
+        ss >> item;
+        dList.addToEnd(item);
+        dList.saveToFile("dlist.txt"); 
+    }
+    else if (command == "DLDEL_HEAD") { // удаление из головы
+        dList.loadFromFile("dlist.txt");
+        dList.delFromHead();
+        dList.saveToFile("dlist.txt"); 
+    }
+    else if (command == "DLDEL_TAIL") { // удаление из хвоста
+        dList.loadFromFile("dlist.txt");
+        dList.delFromEnd();
+        dList.saveToFile("dlist.txt"); 
+    }
+    else if (command == "DLDEL_VALUE") { // удаление по значению
+        dList.loadFromFile("dlist.txt");
+        string item;
+        ss >> item;
+        dList.delItem(item);
+        dList.saveToFile("dlist.txt"); 
+    }
+    else if (command == "DLFIND_VALUE") { // поиск по значению
+        string item;
+        ss >> item;
+        dList.findItem(item);
+    }
+    else if (command == "DLGET") { // поиск по индексу (чтение)
+        int index;
+        ss >> index;
+        dList.findIndex(index);
+    }
+    else if (command == "DLPRINT") { // вывод списка
+        dList.loadFromFile("dlist.txt");
+        dList.printList();
     }
 }
 
