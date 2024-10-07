@@ -144,8 +144,8 @@ struct singlyList {
         cout << endl;
     }
 
-    void loadFromFile(const string& file) {
-        while (first) {
+    void loadFromFile(const string& file) { // загрузка данных из файла
+        while (first) { // очищаем текущий лист
             delFromHead();
         }
         ifstream load(file);
@@ -155,19 +155,19 @@ struct singlyList {
         }
         string str;
         while (getline(load, str)) {
-            addToEnd(str);
+            addToEnd(str); // добавляем элементы
         }
         load.close();
     }
 
-    void saveToFile(const string& file) {
+    void saveToFile(const string& file) { // сохранение в файл
         ofstream save(file);
         if (!save) {
             cout << "Не удалось открыть файл.\n";
         }
-        Node* newNode = first;
+        Node* newNode = first; // начинаем с головы
         while (newNode) {
-            save << newNode->item << endl;
+            save << newNode->item << endl; // записываем данные в файл
             newNode = newNode->next;
         }
         save.close();
