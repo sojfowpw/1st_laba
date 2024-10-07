@@ -1,27 +1,28 @@
+#pragma once
 #include <iostream>
 #include <string>
 
 using namespace std;
 // двусвязный список
-struct Node {
+struct dlNode {
     string item; // значение узла
-    Node* next; // указатель на следующий узел
-    Node* prev; // указатель на предыдущий узел
+    dlNode* next; // указатель на следующий узел
+    dlNode* prev; // указатель на предыдущий узел
 
-    Node(string _item) : item(_item), next(nullptr), prev(nullptr) {} // конструктор для создания нового узла с заданным значением
+    dlNode(string _item) : item(_item), next(nullptr), prev(nullptr) {} // конструктор для создания нового узла с заданным значением
 };
 
-struct List {
-    Node* first; // указатель на первый узел
-    Node* last; // указатель на последний узел
-    List() : first(nullptr), last(nullptr) {} // конструктор для создания пустого списка
+struct doubleList {
+    dlNode* first; // указатель на первый узел
+    dlNode* last; // указатель на последний узел
+    doubleList() : first(nullptr), last(nullptr) {} // конструктор для создания пустого списка
 
     bool is_empty() { // проверка, пустой ли список
         return first == nullptr; // если 1 узел пустой - список пустой
     }
 
     void addToEnd(string _item) { // добавление узла в конец списка
-        Node* newNode = new Node(_item); // создаём новый узел с заданным значением
+        dlNode* newNode = new dlNode(_item); // создаём новый узел с заданным значением
         if (is_empty()) { // если список пустой
             first = newNode; // новый узел становится первым
             last = newNode; // и последним
@@ -33,7 +34,7 @@ struct List {
     }
 
     void addToHead(string _item) { // добавление узла в начало списка
-        Node* newNode = new Node(_item); // создаём новый узел с заданным значением
+        dlNode* newNode = new dlNode(_item); // создаём новый узел с заданным значением
         if (is_empty()) { // если список пустой
             first = newNode; // новый узел становится первым
             last = newNode; // и последним
@@ -49,7 +50,7 @@ struct List {
             cout << "Список пуст.\n";
             return;
         }
-        Node* newNode = first; // новый указатель указывает на первый узел
+        dlNode* newNode = first; // новый указатель указывает на первый узел
         first = newNode->next; // первый узел теперь указывает за последующим за новым
         if (first) { // если новый первый узел существует
             first->prev = nullptr; // связываем первый узел с nullptr
@@ -65,7 +66,7 @@ struct List {
             cout << "Список пуст.\n";
             return;
         }
-        Node* newNode = last; // новый указатель на последний узел
+        dlNode* newNode = last; // новый указатель на последний узел
         last = newNode->prev; // последний узел теперь связан с предыдущим нового 
         if (last) { // если новый последний узел существует
             last->next = nullptr; // связываем последний узел с nullptr
@@ -81,7 +82,7 @@ struct List {
             cout << "Список пуст.\n";
             return;
         }
-        Node* newNode = first; // указатель на первый узел
+        dlNode* newNode = first; // указатель на первый узел
         while (newNode) { // пока новый указатель не указывает на nullptr
             cout << newNode->item << " "; // выводим значения
             newNode = newNode->next; // новый узел указывает на следующий указатель
@@ -102,8 +103,8 @@ struct List {
             delFromEnd();
             return;
         }
-        Node* newFirst = first; // создаём указатель на первый узел
-        Node* newLast = first->next; // создаём указатель на второй узел
+        dlNode* newFirst = first; // создаём указатель на первый узел
+        dlNode* newLast = first->next; // создаём указатель на второй узел
         while (newLast && newLast->item != _item) { // пока второй указатель не указывает на nullptr и пока не нашлось искомое значение
             newLast = newLast->next; // проходимся по узлам
             newFirst = newFirst->next; // проходимся по узлам
@@ -117,12 +118,12 @@ struct List {
         delete newLast; // удаляем искомый узел
     }
 
-    int findItem(string _item) { // поиск элемента по значению
+    void findItem(string _item) { // поиск элемента по значению
         if (is_empty()) { // если список пустой
             cout << "Список пуст.\n";
-            return -1;
+            return;
         }
-        Node* newNode = first; // новый указатель на первый узел
+        dlNode* newNode = first; // новый указатель на первый узел
         int index = 0; // текущий индекс
         while (newNode && newNode->item != _item) { // пока указатель не указывает на nullptr и пока не найдено искомое значение
             newNode = newNode->next; // проходимся по узлам
@@ -130,35 +131,55 @@ struct List {
         }
         if (!newNode) { // если элемент не найден
             cout << "Такого элемента нет в списке.\n";
-            return -1;
+            return;
         }
-        return index; // возвращаем индекс
+        cout << "Индекс элемента: " << index << endl; // возвращаем индекс
     }
 
-    string findIndex(int index) { // поиск по индексу
+    void findIndex(int index) { // поиск по индексу
         if (is_empty()) { // проверка на пустоту
             cout << "Список пуст.\n";
-            return "";
+            return;
         }
-        Node* newNode = first; // новый указатель на первый узел
+        dlNode* newNode = first; // новый указатель на первый узел
         for (int i = 0; i < index && newNode; i++) { // проходимся по списку, пока текущий индекс не будет равен заданному
             newNode = newNode->next; 
         }
         if (!newNode) { // если элемент не найден
             cout << "Такого элемента нет в списке.\n";
-            return "";
+            return;
         }
         string _item = newNode->item; // переменная для искомого значения
         delete newNode; // освобождение памяти
-        return _item; // возвращаем элемент
+        cout << "Элемент по индексу: " << _item << endl; // возвращаем элемент
+    }
+
+    void loadFromFile(const string& file) { // загрузка данных из файла
+        while (first) { // очищаем текущий лист
+            delFromHead();
+        }
+        ifstream load(file);
+        if (!load) {
+            cout << "Не удалось открыть файл.\n";
+            return;
+        }
+        string str;
+        while (getline(load, str)) {
+            addToEnd(str); // добавляем элементы
+        }
+        load.close();
+    }
+
+    void saveToFile(const string& file) { // сохранение в файл
+        ofstream save(file);
+        if (!save) {
+            cout << "Не удалось открыть файл.\n";
+        }
+        dlNode* newNode = first; // начинаем с головы
+        while (newNode) {
+            save << newNode->item << endl; // записываем данные в файл
+            newNode = newNode->next;
+        }
+        save.close();
     }
 };
-
-int main() {
-    List newList;
-    newList.addToEnd("hello");
-    newList.addToHead("hi");
-    cout << "Индекс: " << newList.findItem("hello") << endl;
-    newList.printList();
-    cout << "Значение: " << newList.findIndex(1) << endl;
-}
