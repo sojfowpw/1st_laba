@@ -4,11 +4,13 @@
 
 #include "singly linked list.hpp"
 #include "double linked list.hpp"
+#include "queue.hpp"
 
 using namespace std;
 
 singlyList sList; // создание односвзяного листа
 doubleList dList; // создание двусвязного листа
+Queue q; // создание очереди
 
 void commands(const string& query) { // обработка входящих команд
     stringstream ss(query); // создаём объект и инициализиурем его строкой
@@ -109,6 +111,30 @@ void commands(const string& query) { // обработка входящих ко
     else if (command == "DLPRINT") { // вывод списка
         dList.loadFromFile("dlist.txt");
         dList.printList();
+    }
+
+
+    // очередь
+    else if (command == "QPUSH") { // добавление элемента в хвост
+        q.loadFromFile("queue.txt");
+        string item;
+        ss >> item;
+        q.push(item);
+        q.saveToFile("queue.txt");
+    }
+    else if (command == "QPOP") { // удаление элемента из головы
+        q.loadFromFile("queue.txt");
+        q.pop();
+        q.saveToFile("queue.txt");
+    }
+    else if (command == "QGET") { // поиск элемента по индексу (чтение)
+        int index;
+        ss >> index;
+        q.findIndex(index);
+    }
+    else if (command == "QPRINT") {
+        q.loadFromFile("queue.txt");
+        q.printQueue();
     }
 }
 
