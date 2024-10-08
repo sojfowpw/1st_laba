@@ -5,12 +5,14 @@
 #include "singly linked list.hpp"
 #include "double linked list.hpp"
 #include "queue.hpp"
+#include "stack.hpp"
 
 using namespace std;
 
 singlyList sList; // создание односвзяного листа
 doubleList dList; // создание двусвязного листа
 Queue q; // создание очереди
+Stack s; // создание стэка
 
 void commands(const string& query) { // обработка входящих команд
     stringstream ss(query); // создаём объект и инициализиурем его строкой
@@ -116,16 +118,12 @@ void commands(const string& query) { // обработка входящих ко
 
     // очередь
     else if (command == "QPUSH") { // добавление элемента в хвост
-        q.loadFromFile("queue.txt");
         string item;
         ss >> item;
         q.push(item);
-        q.saveToFile("queue.txt");
     }
     else if (command == "QPOP") { // удаление элемента из головы
-        q.loadFromFile("queue.txt");
         q.pop();
-        q.saveToFile("queue.txt");
     }
     else if (command == "QGET") { // поиск элемента по индексу (чтение)
         int index;
@@ -133,8 +131,26 @@ void commands(const string& query) { // обработка входящих ко
         q.findIndex(index);
     }
     else if (command == "QPRINT") {
-        q.loadFromFile("queue.txt");
         q.printQueue();
+    }
+
+
+    // стэк
+    else if (command == "SPUSH") { // добавление в голову
+        string item;
+        ss >> item;
+        s.push(item);
+    }
+    else if (command == "SPOP") { // удаление из головы
+        s.pop();
+    }
+    else if (command == "SGET") { // чтение (поиск элемента по индексу)
+        int index;
+        ss >> index;
+        s.findIndex(index);
+    }
+    else if (command == "SPRINT") { // вывод элементов стэка
+        s.printStack();
     }
 }
 
