@@ -11,7 +11,7 @@
 using namespace std;
 
 Array a; // создание массива
-//singlyList sList; // создание односвзяного листа
+singlyList sList; // создание односвзяного листа
 doubleList dList; // создание двусвязного листа
 Queue q; // создание очереди
 Stack s; // создание стэка
@@ -173,51 +173,55 @@ void commands(const string& query) { // обработка входящих ко
 
     // очередь
     else if (command == "QPUSH") { // добавление элемента в хвост
+        q.loadFromFile("queue.txt");
         string item;
         ss >> item;
         q.push(item);
+        q.saveToFile("queue.txt");
     }
     else if (command == "QPOP") { // удаление элемента из головы
+        q.loadFromFile("queue.txt");
         q.pop();
+        q.saveToFile("queue.txt");
     }
     else if (command == "QGET") { // поиск элемента по индексу (чтение)
+        q.loadFromFile("queue.txt");
         int index;
         ss >> index;
         q.findIndex(index);
     }
     else if (command == "QPRINT") { // вывод элементов очереди
+        q.loadFromFile("queue.txt");
         q.printQueue();
     }
 
 
     // стэк
     else if (command == "SPUSH") { // добавление в голову
+        s.loadFromFile("stack.txt");
         string item;
         ss >> item;
         s.push(item);
+        s.saveToFile("stack.txt");
     }
     else if (command == "SPOP") { // удаление из головы
+        s.loadFromFile("stack.txt");
         s.pop();
+        s.saveToFile("stack.txt");
     }
     else if (command == "SGET") { // чтение (поиск элемента по индексу)
+        s.loadFromFile("stack.txt");
         int index;
         ss >> index;
         s.findIndex(index);
     }
     else if (command == "SPRINT") { // вывод элементов стэка
+        s.loadFromFile("stack.txt");
         s.printStack();
     }
 }
 
-int main(int argc, char* argv[]) { // argc - количество аргументов команды, argv - массив указателей на строки
-    /*string file; // имя файла
-    for (int i = 0; i < argc; i++) {
-        string arg = argv[i];
-        if (arg == "--file" && i + 1 < argc) { // если аргумент равен --file и не последний
-            file = argv[++i]; // присваиваем имя файла
-        }
-    }*/
-
+int main() {
     string query; // переменная для введенной команды
     while (true) {
         cout << "Введите команду: ";
