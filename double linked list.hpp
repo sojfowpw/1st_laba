@@ -17,6 +17,16 @@ struct doubleList {
     dlNode* last; // указатель на последний узел
     doubleList() : first(nullptr), last(nullptr) {} // конструктор для создания пустого списка
 
+    ~doubleList() {
+        clear(); // освобождение памяти
+    }
+
+    void clear() { // очистка листа
+        while(first) {
+            delFromHead();
+        }
+    }
+
     bool is_empty() { // проверка, пустой ли список
         return first == nullptr; // если 1 узел пустой - список пустой
     }
@@ -155,9 +165,7 @@ struct doubleList {
     }
 
     void loadFromFile(const string& file) { // загрузка данных из файла
-        while (first) { // очищаем текущий лист
-            delFromHead();
-        }
+        clear(); // очищаем текущий лист
         ifstream load(file);
         if (!load) {
             cout << "Не удалось открыть файл.\n";
@@ -174,6 +182,7 @@ struct doubleList {
         ofstream save(file);
         if (!save) {
             cout << "Не удалось открыть файл.\n";
+            return;
         }
         dlNode* newNode = first; // начинаем с головы
         while (newNode) {
@@ -181,5 +190,6 @@ struct doubleList {
             newNode = newNode->next;
         }
         save.close();
+        const_cast<doubleList*>(this)->clear();
     }
 };
