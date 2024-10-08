@@ -16,6 +16,14 @@ struct singlyList {
     Node* last; // указатель на последний узел
     singlyList() : first(nullptr), last(nullptr) {} // конструктор для создания пустого списка
 
+    ~singlyList() { 
+        while (first) {
+            Node* newNode = first; // указатель на текущий узел
+            first = first->next; // перемещаем указатель на следующий узел
+            delete newNode; // освобождаем память текущего узла
+        }
+    }
+
     bool is_empty() { // проверка, пустой ли список
         return first == nullptr; // если 1 узел пустой - список пустой
     }
@@ -164,6 +172,7 @@ struct singlyList {
         ofstream save(file);
         if (!save) {
             cout << "Не удалось открыть файл.\n";
+            return;
         }
         Node* newNode = first; // начинаем с головы
         while (newNode) {
@@ -171,5 +180,12 @@ struct singlyList {
             newNode = newNode->next;
         }
         save.close();
+        const_cast<singlyList*>(this)->clear();
+    }
+
+    void clear() {
+        while (first) {
+            delFromHead();
+        }
     }
 };
