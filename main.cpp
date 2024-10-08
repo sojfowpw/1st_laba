@@ -2,6 +2,7 @@
 #include <sstream> // работа с потоками строк
 #include <fstream>
 
+#include "array.hpp"
 #include "singly linked list.hpp"
 #include "double linked list.hpp"
 #include "queue.hpp"
@@ -9,7 +10,8 @@
 
 using namespace std;
 
-singlyList sList; // создание односвзяного листа
+Array a; // создание массива
+//singlyList sList; // создание односвзяного листа
 doubleList dList; // создание двусвязного листа
 Queue q; // создание очереди
 Stack s; // создание стэка
@@ -20,8 +22,61 @@ void commands(const string& query) { // обработка входящих ко
     ss >> command; // извлекаем слово из команды в переменную
 
 
+    // массив
+    if (command == "MPUSH_IND") { // добавление по индексу
+        a.loadFromFile("array.txt");
+        string item;
+        size_t index;
+        ss >> item >> index;
+        a.addByInd(item, index);
+        a.saveToFile("array.txt");
+    }
+    else if (command == "MPUSH_BACK") { // добавление в конец
+        a.loadFromFile("array.txt");
+        string item;
+        ss >> item;
+        a.addToEnd(item);
+        a.saveToFile("array.txt");
+    }
+    else if (command == "MFIND_INDEX") { // поиск по индексу
+        a.loadFromFile("array.txt");
+        size_t index;
+        ss >> index;
+        a.findByIndex(index);
+    }
+    else if (command == "MDEL") { // удаление по индексу
+        a.loadFromFile("array.txt");
+        size_t index;
+        ss >> index;
+        a.delByIndex(index);
+        a.saveToFile("array.txt");
+    }
+    else if (command == "MREPLACE") { // замена элемента по индексу
+        a.loadFromFile("array.txt");
+        size_t index;
+        string item;
+        ss >> index >> item;
+        a.replace(index, item);
+        a.saveToFile("array.txt");
+    }
+    else if (command == "MSIZE") { // длина массива
+        a.loadFromFile("array.txt");
+        a.length();
+    }
+    else if (command == "MGET") { // чтение (поиск по значению)
+        a.loadFromFile("array.txt");
+        string item;
+        ss >> item;
+        a.findByItem(item);
+    }
+    else if (command == "MPRINT") { // вывод элементов массива
+        a.loadFromFile("array.txt");
+        a.printArray();
+    }
+
+
     // односвязный список
-    if (command == "SLPUSH_HEAD") { // добавление в голову
+    else if (command == "SLPUSH_HEAD") { // добавление в голову
         sList.loadFromFile("slist.txt");
         string item; // добавляемый элемент
         ss >> item; // считываем элемент
@@ -130,7 +185,7 @@ void commands(const string& query) { // обработка входящих ко
         ss >> index;
         q.findIndex(index);
     }
-    else if (command == "QPRINT") {
+    else if (command == "QPRINT") { // вывод элементов очереди
         q.printQueue();
     }
 
