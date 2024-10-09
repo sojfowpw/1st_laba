@@ -7,6 +7,8 @@
 #include "double linked list.hpp"
 #include "queue.hpp"
 #include "stack.hpp"
+#include "cbt.hpp"
+#include "hashtable.hpp"
 
 using namespace std;
 
@@ -15,6 +17,8 @@ singlyList sList; // создание односвзяного листа
 doubleList dList; // создание двусвязного листа
 Queue q; // создание очереди
 Stack s; // создание стэка
+CBT tree; // создание дерева
+hashTable ht; // создание хэш-таблицы
 
 void commands(const string& query) { // обработка входящих команд
     stringstream ss(query); // создаём объект и инициализиурем его строкой
@@ -219,9 +223,72 @@ void commands(const string& query) { // обработка входящих ко
         s.loadFromFile("stack.txt");
         s.printStack();
     }
+
+
+    // cbt
+    else if (command == "TINSERT") { // добавление элемента
+        tree.loadFromFile("cbt.txt");
+        int item;
+        ss >> item;
+        tree.insert(item);
+        tree.saveToFile("cbt.txt");
+    }
+    else if (command == "TFIND_VAL") { // поиск элемента
+        tree.loadFromFile("cbt.txt");
+        int item;
+        ss >> item;
+        cout << boolalpha << tree.findVal(item) << endl;
+    }
+    else if (command == "TGET") { // поиск по индексу (чтение)
+        tree.loadFromFile("cbt.txt");
+        int index;
+        ss >> index;
+        tree.findIndex(index);
+    }
+    else if (command == "IS_CBT") { // проверка на cbt
+        tree.loadFromFile("cbt.txt");
+        cout << boolalpha << tree.isCBT() << endl;
+    }
+    else if (command == "TPRINT") { // вывод дерева
+        tree.loadFromFile("cbt.txt");
+        tree.printTree();
+    }
+
+
+    //хэш-таблица
+    else if (command == "HSET") { // добавление элемента
+        ht.loadFromFile(ht, "ht.txt");
+        string key;
+        string item;
+        ss >> key >> item;
+        ht.insert(ht, key, item);
+        ht.saveToFile(ht, "ht.txt");
+    }
+    else if (command == "HGET") { // поиск элемента
+        ht.loadFromFile(ht, "ht.txt");
+        string key;
+        int index;
+        ss >> key >> index;
+        ht.get(ht, key, index);
+    }
+    else if (command == "HDEL") { // удаление элемента
+        ht.loadFromFile(ht, "ht.txt");
+        string key;
+        ss >> key;
+        ht.del(ht, key);
+        ht.saveToFile(ht, "ht.txt");
+    }
+    else if (command == "HPRINT") { // вывод хэш-таблицы
+        ht.loadFromFile(ht, "ht.txt");
+        ht.printHashTable(ht);
+    }
+    else {
+        cout << "Неизвестная команда.\n";
+    }
 }
 
 int main() {
+    ht.initialisation(ht);
     string query; // переменная для введенной команды
     while (true) {
         cout << "Введите команду: ";
