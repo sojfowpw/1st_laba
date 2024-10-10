@@ -18,7 +18,7 @@ doubleList dList; // создание двусвязного листа
 Queue q; // создание очереди
 Stack s; // создание стэка
 CBT tree; // создание дерева
-hashTable ht; // создание хэш-таблицы
+hashTable ht = hashTable(); // создание хэш-таблицы
 
 void commands(const string& query) { // обработка входящих команд
     stringstream ss(query); // создаём объект и инициализиурем его строкой
@@ -269,7 +269,7 @@ void commands(const string& query) { // обработка входящих ко
         string key;
         int index;
         ss >> key >> index;
-        ht.get(ht, key, index);
+        cout << ht.get(ht, key, index) << endl;
     }
     else if (command == "HDEL") { // удаление элемента
         ht.loadFromFile(ht, "ht.txt");
