@@ -269,7 +269,7 @@ void commands(const string& query) { // обработка входящих ко
         string key;
         int index;
         ss >> key >> index;
-        cout << ht.get(ht, key, index) << endl;
+        cout << ht.get(ht, key) << endl;
     }
     else if (command == "HDEL") { // удаление элемента
         ht.loadFromFile(ht, "ht.txt");
